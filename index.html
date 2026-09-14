@@ -11,110 +11,158 @@
     <!-- Font Awesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     
-    <!-- Custom CSS for Brutalist Style -->
+    <!-- Google Fonts: Space Mono for retro vibe & Inter for readability -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['"Space Mono"', 'monospace'],
+                    },
+                    colors: {
+                        retro: {
+                            bg: '#f4f0e6', // Vintage paper/hardware beige
+                            card: '#fdfbf7', // Slightly lighter for cards
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom CSS for Brutalist & Retro Style -->
     <style>
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #ffffff;
+            background-color: #f4f0e6;
             color: #000000;
+            /* Subtle retro dot grid pattern */
+            background-image: radial-gradient(rgba(0,0,0,0.15) 1px, transparent 1px);
+            background-size: 24px 24px;
         }
         
         /* Brutalist Styles */
         .brutalist-border {
-            border: 2px solid #000000;
+            border: 3px solid #000000;
         }
         
         .brutalist-card {
-            background: #ffffff;
-            border: 2px solid #000000;
-            box-shadow: 4px 4px 0px 0px #000000;
+            background: #fdfbf7;
+            border: 3px solid #000000;
+            box-shadow: 6px 6px 0px 0px #000000;
             transition: all 0.2s ease;
         }
         
         .brutalist-card:hover {
-            transform: translate(-2px, -2px);
-            box-shadow: 6px 6px 0px 0px #000000;
+            transform: translate(-3px, -3px);
+            box-shadow: 9px 9px 0px 0px #000000;
         }
         
         .brutalist-button {
-            border: 2px solid #000000;
+            border: 3px solid #000000;
             background-color: #000000;
-            color: #ffffff;
-            font-weight: bold;
+            color: #fdfbf7;
             transition: all 0.2s ease;
+            text-transform: uppercase;
         }
         
         .brutalist-button:hover {
-            background-color: #facc15; /* Tailwind yellow-400 */
+            background-color: #facc15;
             color: #000000;
         }
         
         .brutalist-button-outline {
-            border: 2px solid #000000;
-            background-color: #ffffff;
+            border: 3px solid #000000;
+            background-color: #fdfbf7;
             color: #000000;
-            font-weight: bold;
             transition: all 0.2s ease;
+            text-transform: uppercase;
         }
         
         .brutalist-button-outline:hover {
             background-color: #facc15;
-            box-shadow: 2px 2px 0px 0px #000000;
+            box-shadow: 4px 4px 0px 0px #000000;
+            transform: translate(-2px, -2px);
         }
 
         .filter-btn {
-            border: 2px solid #000000;
-            background-color: #ffffff;
+            border: 3px solid #000000;
+            background-color: #fdfbf7;
             color: #000000;
-            font-weight: bold;
             transition: all 0.2s ease;
         }
 
         .filter-btn:hover {
-            background-color: #fef08a; /* yellow-200 */
+            background-color: #fef08a; 
         }
 
         .filter-btn.active {
             background-color: #facc15;
-            box-shadow: 2px 2px 0px 0px #000000;
-            transform: translate(-1px, -1px);
+            box-shadow: 4px 4px 0px 0px #000000;
+            transform: translate(-2px, -2px);
         }
 
         .brutalist-tag {
             border: 2px solid #000000;
-            background-color: #ffffff;
+            background-color: #fdfbf7;
             transition: all 0.2s ease;
         }
         .brutalist-tag:hover {
             background-color: #facc15;
         }
+
+        /* Subtle scanline effect on image containers */
+        .retro-scanlines::after {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.08) 50%,
+                rgba(0,0,0,0.08)
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 20;
+        }
     </style>
 </head>
-<body class="min-h-screen bg-white text-black selection:bg-yellow-400 selection:text-black">
+<body class="min-h-screen selection:bg-yellow-400 selection:text-black">
 
     <!-- 1. Navigation Bar -->
-    <nav class="fixed top-0 left-0 right-0 bg-white border-b-4 border-black z-50 transition-all duration-300">
+    <nav class="fixed top-0 left-0 right-0 bg-retro-bg border-b-4 border-black z-50 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
             <div class="flex items-center justify-between h-16 md:h-20">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center gap-3">
-                    <div class="w-8 h-8 md:w-10 md:h-10 bg-yellow-400 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors cursor-pointer">
+                    <div class="w-8 h-8 md:w-10 md:h-10 bg-yellow-400 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors cursor-pointer shadow-[2px_2px_0_0_#000]">
                         <i class="fa-solid fa-microchip text-lg"></i>
                     </div>
-                    <span class="font-bold text-lg md:text-xl tracking-tight">Zyad Ayman</span>
+                    <span class="font-mono font-bold text-lg md:text-xl tracking-tight uppercase">Zyad_Ayman</span>
                 </div>
                 
                 <!-- Desktop Menu -->
-                <div class="hidden md:flex items-center gap-6 md:gap-8">
-                    <a href="#about" class="text-sm md:text-base font-bold hover:text-yellow-500 transition-colors">About</a>
-                    <a href="#projects" class="text-sm md:text-base font-bold hover:text-yellow-500 transition-colors">Projects</a>
-                    <a href="#skills" class="text-sm md:text-base font-bold hover:text-yellow-500 transition-colors">Skills</a>
-                    <a href="#contact" class="text-sm md:text-base font-bold hover:text-yellow-500 transition-colors">Contact</a>
+                <div class="hidden md:flex items-center gap-6 md:gap-8 font-mono">
+                    <a href="#about" class="text-sm md:text-base font-bold hover:text-yellow-600 transition-colors uppercase">About</a>
+                    <a href="#projects" class="text-sm md:text-base font-bold hover:text-yellow-600 transition-colors uppercase">Projects</a>
+                    <a href="#skills" class="text-sm md:text-base font-bold hover:text-yellow-600 transition-colors uppercase">Skills</a>
+                    <a href="#contact" class="text-sm md:text-base font-bold hover:text-yellow-600 transition-colors uppercase">Contact</a>
                 </div>
 
                 <!-- Mobile Menu Button -->
                 <div class="md:hidden">
-                    <button id="mobile-menu-btn" class="text-black hover:text-yellow-500 p-2 focus:outline-none">
+                    <button id="mobile-menu-btn" class="text-black hover:text-yellow-600 p-2 focus:outline-none">
                         <i class="fa-solid fa-bars text-2xl"></i>
                     </button>
                 </div>
@@ -122,8 +170,8 @@
         </div>
         
         <!-- Mobile Menu Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t-2 border-black">
-            <ul class="px-4 py-4 space-y-2 font-bold text-black text-center">
+        <div id="mobile-menu" class="hidden md:hidden bg-retro-card border-t-4 border-black">
+            <ul class="px-4 py-4 space-y-2 font-mono font-bold text-black text-center uppercase">
                 <li><a href="#about" class="block py-3 hover:bg-yellow-400 border-2 border-transparent hover:border-black transition-all">About</a></li>
                 <li><a href="#projects" class="block py-3 hover:bg-yellow-400 border-2 border-transparent hover:border-black transition-all">Projects</a></li>
                 <li><a href="#skills" class="block py-3 hover:bg-yellow-400 border-2 border-transparent hover:border-black transition-all">Skills</a></li>
@@ -139,27 +187,26 @@
         <section id="about" class="pt-20 md:pt-32 pb-20 md:pb-32 px-6 lg:px-8 max-w-7xl mx-auto relative overflow-hidden">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
                 
-                <div class="order-1 md:order-1 space-y-6 md:space-y-8">
+                <div class="order-1 md:order-1 space-y-6 md:space-y-8 bg-retro-bg/90 p-4 -ml-4">
                     <div class="space-y-4">
-                        <h1 class="text-5xl md:text-6xl font-bold tracking-tight leading-tight" style="letter-spacing:-0.02em">
-                            Hardware Designer & PCB Specialist
+                        <h1 class="font-mono text-5xl md:text-6xl font-bold tracking-tight leading-tight uppercase" style="letter-spacing:-0.02em">
+                            Hardware <br>Designer <br><span class="bg-yellow-400 px-2 border-2 border-black inline-block mt-2 shadow-[4px_4px_0_0_#000]">& PCB Specialist</span>
                         </h1>
-                        <div class="w-16 h-1 bg-yellow-400 border-2 border-black"></div>
                     </div>
                     
-                    <p class="text-xl md:text-2xl font-bold text-gray-700">
-                        I am an Electronics and Embedded Systems Engineer transforming ideas from schematic capture to mass-manufacturable hardware.
+                    <p class="text-xl md:text-2xl font-bold text-gray-800">
+                        Transforming ideas from schematic capture to mass-manufacturable hardware.
                     </p>
                     
-                    <p class="text-base md:text-lg leading-relaxed text-gray-600">
-                        Specializing in custom PCB layout (KiCad), microcontroller firmware (ESP32, RP2040, STM32), RTOS, and digital fabrication. Building robust, production-ready electronic solutions.
+                    <p class="text-base md:text-lg leading-relaxed text-gray-700 font-medium">
+                        Specializing in custom PCB layout (KiCad), microcontroller firmware (ESP32, RP2040, STM32), RTOS, and digital fabrication. Building robust, production-ready electronic solutions with an old-school engineering ethos.
                     </p>
                     
-                    <div class="flex flex-wrap gap-4 pt-4">
-                        <a href="#projects" class="px-6 py-3 brutalist-button text-sm tracking-wide inline-flex items-center gap-2">
+                    <div class="flex flex-wrap gap-4 pt-4 font-mono font-bold">
+                        <a href="#projects" class="px-6 py-3 brutalist-button text-sm inline-flex items-center gap-2">
                             Explore Projects <i class="fa-solid fa-arrow-down"></i>
                         </a>
-                        <a href="#" class="px-6 py-3 brutalist-button-outline text-sm tracking-wide inline-flex items-center gap-2">
+                        <a href="#" class="px-6 py-3 brutalist-button-outline text-sm inline-flex items-center gap-2">
                             <i class="fa-solid fa-download"></i> Download Resume
                         </a>
                     </div>
@@ -169,11 +216,11 @@
                 <div class="order-2 md:order-2 flex justify-center">
                     <div class="relative w-full max-w-md mx-auto h-80 md:h-[30rem]">
                         <div class="absolute -inset-3 bg-yellow-400 transform rotate-3 brutalist-border"></div>
-                        <div class="absolute inset-0 bg-white brutalist-border flex items-center justify-center overflow-hidden">
-                            <div class="text-center p-8">
-                                <i class="fa-solid fa-microchip text-8xl text-black mb-6 drop-shadow-md"></i>
-                                <div class="text-2xl font-bold tracking-widest border-2 border-black bg-yellow-400 px-4 py-2 inline-block shadow-[4px_4px_0_0_#000]">
-                                    ZYAD_AYMAN
+                        <div class="absolute inset-0 bg-retro-card brutalist-border flex items-center justify-center overflow-hidden retro-scanlines">
+                            <div class="text-center p-8 relative z-10">
+                                <i class="fa-solid fa-server text-8xl text-black mb-6 drop-shadow-md"></i>
+                                <div class="font-mono text-2xl font-bold tracking-widest border-3 border-black bg-yellow-400 px-4 py-2 inline-block shadow-[4px_4px_0_0_#000] uppercase">
+                                    SYS.READY_
                                 </div>
                             </div>
                         </div>
@@ -186,18 +233,18 @@
         <div class="w-full h-1 bg-black"></div>
 
         <!-- 3. Projects Section (Dynamic) -->
-        <section id="projects" class="py-16 md:py-24 px-6 lg:px-8 max-w-7xl mx-auto relative">
+        <section id="projects" class="py-16 md:py-24 px-6 lg:px-8 max-w-7xl mx-auto relative bg-retro-bg/90">
             <div class="flex items-center gap-4 mb-10 md:mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold tracking-tight inline-block px-2">Featured Projects</h2>
+                <h2 class="font-mono text-4xl md:text-5xl font-bold tracking-tight inline-block px-2 bg-retro-bg uppercase">Featured Projects</h2>
                 <div class="flex-1 h-1 bg-yellow-400 border-b-2 border-black"></div>
             </div>
 
             <!-- Filter Pills -->
-            <div class="flex flex-wrap gap-3 mb-12" id="project-filters">
-                <button data-filter="all" class="filter-btn active px-5 py-2 text-sm">All</button>
-                <button data-filter="pcb" class="filter-btn px-5 py-2 text-sm">PCBs & Hardware</button>
-                <button data-filter="embedded" class="filter-btn px-5 py-2 text-sm">Embedded Firmware</button>
-                <button data-filter="fab" class="filter-btn px-5 py-2 text-sm">Digital Fab</button>
+            <div class="flex flex-wrap gap-3 mb-12 font-mono font-bold" id="project-filters">
+                <button data-filter="all" class="filter-btn active px-5 py-2 text-sm uppercase">All</button>
+                <button data-filter="pcb" class="filter-btn px-5 py-2 text-sm uppercase">PCBs & Hardware</button>
+                <button data-filter="embedded" class="filter-btn px-5 py-2 text-sm uppercase">Firmware</button>
+                <button data-filter="fab" class="filter-btn px-5 py-2 text-sm uppercase">Digital Fab</button>
             </div>
 
             <!-- Dynamic Project Grid -->
@@ -209,9 +256,9 @@
         <div class="w-full h-1 bg-black"></div>
 
         <!-- 4. Skills Matrix Section -->
-        <section id="skills" class="py-16 md:py-24 px-6 lg:px-8 max-w-7xl mx-auto">
+        <section id="skills" class="py-16 md:py-24 px-6 lg:px-8 max-w-7xl mx-auto bg-retro-bg/90">
             <div class="flex items-center gap-4 mb-12 md:mb-16">
-                <h2 class="text-4xl md:text-5xl font-bold tracking-tight inline-block px-2">Technical Arsenal</h2>
+                <h2 class="font-mono text-4xl md:text-5xl font-bold tracking-tight inline-block px-2 uppercase">Technical Arsenal</h2>
                 <div class="flex-1 h-1 bg-yellow-400 border-b-2 border-black"></div>
             </div>
 
@@ -219,14 +266,14 @@
                 
                 <!-- Category 1 -->
                 <div class="brutalist-card p-6 md:p-8">
-                    <h3 class="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+                    <h3 class="font-mono text-2xl font-bold text-black mb-6 flex items-center gap-3 uppercase">
                         <i class="fa-solid fa-microchip text-yellow-500 text-3xl"></i> Firmware
                     </h3>
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-2 font-mono">
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">ESP32</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">RP2040</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">STM32</span>
-                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Raspberry Pi</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">R-PI</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">C/C++</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">FreeRTOS</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Python</span>
@@ -235,47 +282,47 @@
 
                 <!-- Category 2 -->
                 <div class="brutalist-card p-6 md:p-8 relative">
-                    <div class="absolute top-0 right-0 w-16 h-16 bg-yellow-400 border-l-2 border-b-2 border-black -z-10 translate-x-2 -translate-y-2"></div>
-                    <h3 class="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-yellow-400 border-l-3 border-b-3 border-black -z-10 translate-x-2 -translate-y-2"></div>
+                    <h3 class="font-mono text-2xl font-bold text-black mb-6 flex items-center gap-3 uppercase">
                         <i class="fa-solid fa-layer-group text-yellow-500 text-3xl"></i> PCB Design
                     </h3>
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-2 font-mono">
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">KiCad</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Altium</span>
-                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Multi-layer Routing</span>
-                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Impedance Control</span>
-                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Gerber Generation</span>
-                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Soldering (SMD)</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Routing</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Impedance</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Gerbers</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">SMD Soldering</span>
                     </div>
                 </div>
 
                 <!-- Category 3 -->
                 <div class="brutalist-card p-6 md:p-8">
-                    <h3 class="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+                    <h3 class="font-mono text-2xl font-bold text-black mb-6 flex items-center gap-3 uppercase">
                         <i class="fa-solid fa-cube text-yellow-500 text-3xl"></i> Digital Fab
                     </h3>
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-2 font-mono">
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Fusion 360</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">3D Printing</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Laser Cutting</span>
-                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">CNC Milling</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">CNC</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Inkscape</span>
                     </div>
                 </div>
 
                 <!-- Category 4 -->
                 <div class="brutalist-card p-6 md:p-8">
-                    <h3 class="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+                    <h3 class="font-mono text-2xl font-bold text-black mb-6 flex items-center gap-3 uppercase">
                         <i class="fa-solid fa-network-wired text-yellow-500 text-3xl"></i> Protocols
                     </h3>
-                    <div class="flex flex-wrap gap-2">
+                    <div class="flex flex-wrap gap-2 font-mono">
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">SPI</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">I2C</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">UART</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">RS485</span>
                         <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">CAN Bus</span>
-                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Git/GitHub</span>
-                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Linux</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Git</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Bash</span>
                     </div>
                 </div>
 
@@ -290,25 +337,25 @@
             <div class="flex flex-col md:flex-row justify-between items-center gap-8">
                 
                 <div class="text-center md:text-left">
-                    <h2 class="text-3xl md:text-4xl font-bold text-black mb-4">Let's build something.</h2>
+                    <h2 class="font-mono text-3xl md:text-4xl font-bold text-black mb-4 uppercase">Let's build <br>something.</h2>
                     <p class="text-black font-medium max-w-md text-lg">Open for new opportunities. Discuss hardware architectures, firmware, or PCB design.</p>
                 </div>
                 
                 <div class="flex items-center gap-4">
-                    <a href="mailto:contact@example.com" class="w-14 h-14 bg-white border-2 border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-all transform hover:-translate-y-1 shadow-[4px_4px_0_0_#000]">
+                    <a href="mailto:contact@example.com" class="w-14 h-14 bg-retro-card border-3 border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-all transform hover:-translate-y-1 shadow-[4px_4px_0_0_#000]">
                         <i class="fa-solid fa-envelope text-2xl"></i>
                     </a>
-                    <a href="https://linkedin.com/in/yourprofile" target="_blank" class="w-14 h-14 bg-white border-2 border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-all transform hover:-translate-y-1 shadow-[4px_4px_0_0_#000]">
+                    <a href="https://linkedin.com/in/yourprofile" target="_blank" class="w-14 h-14 bg-retro-card border-3 border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-all transform hover:-translate-y-1 shadow-[4px_4px_0_0_#000]">
                         <i class="fa-brands fa-linkedin-in text-2xl"></i>
                     </a>
-                    <a href="https://github.com/yourusername" target="_blank" class="w-14 h-14 bg-white border-2 border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-all transform hover:-translate-y-1 shadow-[4px_4px_0_0_#000]">
+                    <a href="https://github.com/yourusername" target="_blank" class="w-14 h-14 bg-retro-card border-3 border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-all transform hover:-translate-y-1 shadow-[4px_4px_0_0_#000]">
                         <i class="fa-brands fa-github text-2xl"></i>
                     </a>
                 </div>
             </div>
             
-            <div class="border-t-2 border-black mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm font-bold text-black">
-                <p>&copy; <span id="year"></span> Zyad Ayman. All rights reserved.</p>
+            <div class="border-t-3 border-black mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm font-bold text-black font-mono uppercase">
+                <p>&copy; <span id="year"></span> Zyad Ayman.</p>
                 <p class="flex items-center gap-2">
                     Built with HTML, Tailwind & Vanilla JS
                 </p>
@@ -342,7 +389,7 @@
         const projects = [
             {
                 id: 1,
-                title: "ESP32 RS485 Carrier Board",
+                title: "ESP32 RS485 Carrier",
                 category: "pcb",
                 image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800",
                 desc: "A custom 4-layer industrial carrier board for the ESP32 featuring isolated RS485 transceivers, power conditioning, and ESD protection.",
@@ -351,7 +398,7 @@
             },
             {
                 id: 2,
-                title: "FOTA Automotive Firmware Node",
+                title: "Automotive FOTA Node",
                 category: "embedded",
                 image: "https://images.unsplash.com/photo-1593006526971-460d3d5f30e0?auto=format&fit=crop&q=80&w=800",
                 desc: "Developed a FreeRTOS-based firmware for STM32 microcontrollers enabling Firmware-Over-The-Air (FOTA) updates via CAN bus.",
@@ -360,7 +407,7 @@
             },
             {
                 id: 3,
-                title: "Wearable WS2812B Lighted Shoes",
+                title: "WS2812B Lighted Shoes",
                 category: "fab",
                 image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800",
                 desc: "Designed and 3D printed flexible TPU enclosures for addressable LED strips integrated into footwear. Powered by an RP2040.",
@@ -369,7 +416,7 @@
             },
             {
                 id: 4,
-                title: "Home Automation IoT Gateway",
+                title: "IoT Automation Gateway",
                 category: "embedded",
                 image: "https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=800",
                 desc: "A central hub combining Zigbee and Wi-Fi to bridge local sensor networks to an MQTT broker. Implemented secure TLS communication.",
@@ -386,40 +433,40 @@
 
             filteredProjects.forEach(project => {
                 const tagsHtml = project.tags.map(tag => 
-                    `<span class="px-2 py-1 bg-white border-2 border-black text-xs font-bold hover:bg-yellow-400 transition-colors">${tag}</span>`
+                    `<span class="px-2 py-1 bg-retro-card border-2 border-black text-xs font-bold hover:bg-yellow-400 transition-colors uppercase">${tag}</span>`
                 ).join('');
 
                 let linksHtml = '';
                 if(project.links.github) {
-                    linksHtml += `<a href="${project.links.github}" class="inline-flex items-center gap-2 font-bold text-black hover:text-yellow-600 transition-colors"><i class="fa-brands fa-github text-lg"></i> GitHub</a>`;
+                    linksHtml += `<a href="${project.links.github}" class="inline-flex items-center gap-2 font-bold text-black hover:text-yellow-600 transition-colors uppercase"><i class="fa-brands fa-github text-lg"></i> GitHub</a>`;
                 }
                 if(project.links.docs) {
                     if (linksHtml !== '') linksHtml += `<span class="mx-3 border-l-2 border-black h-4"></span>`;
-                    linksHtml += `<a href="${project.links.docs}" class="inline-flex items-center gap-2 font-bold text-black hover:text-yellow-600 transition-colors"><i class="fa-solid fa-file-pdf text-lg"></i> Docs</a>`;
+                    linksHtml += `<a href="${project.links.docs}" class="inline-flex items-center gap-2 font-bold text-black hover:text-yellow-600 transition-colors uppercase"><i class="fa-solid fa-file-pdf text-lg"></i> Docs</a>`;
                 }
 
                 const cardHtml = `
                     <div class="brutalist-card flex flex-col h-full overflow-hidden group">
-                        <div class="relative h-64 border-b-2 border-black bg-gray-100 overflow-hidden">
-                            <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <div class="absolute top-4 right-4">
-                                <span class="px-3 py-1 bg-yellow-400 border-2 border-black text-xs font-bold text-black uppercase tracking-widest shadow-[2px_2px_0_0_#000]">
+                        <div class="relative h-64 border-b-3 border-black bg-gray-100 overflow-hidden retro-scanlines">
+                            <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 filter grayscale group-hover:grayscale-0">
+                            <div class="absolute top-4 right-4 z-30">
+                                <span class="px-3 py-1 bg-yellow-400 border-2 border-black text-xs font-bold text-black uppercase tracking-widest shadow-[3px_3px_0_0_#000] font-mono">
                                     ${project.category}
                                 </span>
                             </div>
                         </div>
                         
-                        <div class="p-6 md:p-8 flex flex-col flex-grow bg-white">
-                            <h3 class="text-2xl font-bold text-black mb-4">${project.title}</h3>
-                            <p class="text-gray-700 text-base mb-6 flex-grow leading-relaxed">
+                        <div class="p-6 md:p-8 flex flex-col flex-grow bg-retro-card">
+                            <h3 class="font-mono text-2xl font-bold text-black mb-4 uppercase">${project.title}</h3>
+                            <p class="text-gray-800 font-medium text-base mb-6 flex-grow leading-relaxed">
                                 ${project.desc}
                             </p>
                             
                             <div class="mt-auto">
-                                <div class="flex flex-wrap gap-2 mb-6">
+                                <div class="flex flex-wrap gap-2 mb-6 font-mono">
                                     ${tagsHtml}
                                 </div>
-                                <div class="flex items-center pt-6 border-t-2 border-black">
+                                <div class="flex items-center pt-6 border-t-3 border-black font-mono">
                                     ${linksHtml}
                                 </div>
                             </div>
