@@ -146,7 +146,7 @@
             <div class="flex items-center justify-between h-16 md:h-20">
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center gap-3">
-                    <div class="w-8 h-8 md:w-10 md:h-10 bg-yellow-400 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors cursor-pointer shadow-[2px_2px_0_0_#000]">
+                    <div id="logo-trigger" class="w-8 h-8 md:w-10 md:h-10 bg-yellow-400 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors cursor-pointer shadow-[2px_2px_0_0_#000]">
                         <i class="fa-solid fa-microchip text-lg"></i>
                     </div>
                     <span class="font-mono font-bold text-lg md:text-xl tracking-tight uppercase">Zyad_Ayman</span>
@@ -329,6 +329,56 @@
             </div>
         </section>
 
+        <!-- Admin Dashboard Modal (Hidden) -->
+        <div id="admin-modal" class="fixed inset-0 bg-black/80 z-[100] hidden items-center justify-center p-4">
+            <div class="bg-retro-card brutalist-border w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 md:p-8 relative">
+                <button id="close-admin" class="absolute top-4 right-4 text-black hover:text-red-500 font-bold text-2xl">&times;</button>
+                <h2 class="font-mono text-3xl font-bold mb-6 uppercase border-b-3 border-black pb-2">Admin Panel</h2>
+                
+                <form id="add-project-form" class="space-y-4 font-mono font-bold">
+                    <div>
+                        <label class="block mb-1">Project Title</label>
+                        <input type="text" id="p-title" required class="w-full border-3 border-black p-2 bg-white" placeholder="e.g. Smart Watch">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block mb-1">Category</label>
+                            <select id="p-category" class="w-full border-3 border-black p-2 bg-white uppercase">
+                                <option value="pcb">PCB & Hardware</option>
+                                <option value="embedded">Firmware</option>
+                                <option value="fab">Digital Fab</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block mb-1">Image URL</label>
+                            <input type="text" id="p-image" required class="w-full border-3 border-black p-2 bg-white" placeholder="https://...">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-1">Description</label>
+                        <textarea id="p-desc" required class="w-full border-3 border-black p-2 bg-white h-24"></textarea>
+                    </div>
+                    <div>
+                        <label class="block mb-1">Tags (comma separated)</label>
+                        <input type="text" id="p-tags" required class="w-full border-3 border-black p-2 bg-white" placeholder="ESP32, C++, KiCad">
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block mb-1">GitHub Link (optional)</label>
+                            <input type="text" id="p-github" class="w-full border-3 border-black p-2 bg-white">
+                        </div>
+                        <div>
+                            <label class="block mb-1">Docs Link (optional)</label>
+                            <input type="text" id="p-docs" class="w-full border-3 border-black p-2 bg-white">
+                        </div>
+                    </div>
+                    <div class="pt-4 flex gap-4">
+                        <button type="submit" class="brutalist-button px-6 py-3 flex-1">Add Project</button>
+                        <button type="button" id="export-projects" class="brutalist-button-outline px-6 py-3 flex-1">Export Code</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </main>
 
     <!-- 5. Footer & Contact Section -->
@@ -425,11 +475,15 @@
             }
         ];
 
+        // LOAD FROM LOCAL STORAGE
+        let savedProjects = JSON.parse(localStorage.getItem('my_portfolio_projects') || '[]');
+        let allProjects = [...projects, ...savedProjects];
+
         const projectsGrid = document.getElementById('projects-grid');
         
         function renderProjects(filterCategory = 'all') {
             projectsGrid.innerHTML = '';
-            const filteredProjects = filterCategory === 'all' ? projects : projects.filter(p => p.category === filterCategory);
+            const filteredProjects = filterCategory === 'all' ? allProjects : allProjects.filter(p => p.category === filterCategory);
 
             filteredProjects.forEach(project => {
                 const tagsHtml = project.tags.map(tag => 
@@ -496,6 +550,79 @@
         });
         
         projectsGrid.style.transition = 'opacity 0.2s ease';
+
+        /* =====================================================================
+           ADMIN PANEL LOGIC
+           ===================================================================== */
+        const logoTrigger = document.getElementById('logo-trigger');
+        const adminModal = document.getElementById('admin-modal');
+        const closeAdmin = document.getElementById('close-admin');
+        const addProjectForm = document.getElementById('add-project-form');
+        const exportBtn = document.getElementById('export-projects');
+
+        let clickCount = 0;
+        let clickTimer;
+
+        // Triple click logo to open admin panel
+        logoTrigger.addEventListener('click', () => {
+            clickCount++;
+            clearTimeout(clickTimer);
+            if(clickCount >= 3) {
+                adminModal.classList.remove('hidden');
+                adminModal.classList.add('flex');
+                clickCount = 0;
+            } else {
+                clickTimer = setTimeout(() => { clickCount = 0; }, 500);
+            }
+        });
+
+        closeAdmin.addEventListener('click', () => {
+            adminModal.classList.add('hidden');
+            adminModal.classList.remove('flex');
+        });
+
+        // Add new project
+        addProjectForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const newProject = {
+                id: Date.now(),
+                title: document.getElementById('p-title').value,
+                category: document.getElementById('p-category').value,
+                image: document.getElementById('p-image').value,
+                desc: document.getElementById('p-desc').value,
+                tags: document.getElementById('p-tags').value.split(',').map(t => t.trim()).filter(t => t),
+                links: {
+                    github: document.getElementById('p-github').value || null,
+                    docs: document.getElementById('p-docs').value || null
+                }
+            };
+
+            savedProjects.push(newProject);
+            localStorage.setItem('my_portfolio_projects', JSON.stringify(savedProjects));
+            
+            // Update UI
+            allProjects = [...projects, ...savedProjects];
+            renderProjects(document.querySelector('.filter-btn.active').getAttribute('data-filter'));
+            
+            // Reset and close
+            addProjectForm.reset();
+            adminModal.classList.add('hidden');
+            adminModal.classList.remove('flex');
+        });
+
+        // Export code for hardcoding later
+        exportBtn.addEventListener('click', () => {
+            const code = JSON.stringify(allProjects, null, 4);
+            const blob = new Blob([code], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'exported_projects.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            alert("Exported projects to JSON file! You can copy the contents back into your HTML when you want to make them permanent.");
+        });
 
     </script>
 </body>
