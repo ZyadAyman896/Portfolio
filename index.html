@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyad Ayman | Embedded Systems & PCB Design Engineer</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome for Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Custom CSS for Brutalist Style -->
+    <style>
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #000000;
+        }
+        
+        /* Brutalist Styles */
+        .brutalist-border {
+            border: 2px solid #000000;
+        }
+        
+        .brutalist-card {
+            background: #ffffff;
+            border: 2px solid #000000;
+            box-shadow: 4px 4px 0px 0px #000000;
+            transition: all 0.2s ease;
+        }
+        
+        .brutalist-card:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #000000;
+        }
+        
+        .brutalist-button {
+            border: 2px solid #000000;
+            background-color: #000000;
+            color: #ffffff;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        
+        .brutalist-button:hover {
+            background-color: #facc15; /* Tailwind yellow-400 */
+            color: #000000;
+        }
+        
+        .brutalist-button-outline {
+            border: 2px solid #000000;
+            background-color: #ffffff;
+            color: #000000;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        
+        .brutalist-button-outline:hover {
+            background-color: #facc15;
+            box-shadow: 2px 2px 0px 0px #000000;
+        }
+
+        .filter-btn {
+            border: 2px solid #000000;
+            background-color: #ffffff;
+            color: #000000;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            background-color: #fef08a; /* yellow-200 */
+        }
+
+        .filter-btn.active {
+            background-color: #facc15;
+            box-shadow: 2px 2px 0px 0px #000000;
+            transform: translate(-1px, -1px);
+        }
+
+        .brutalist-tag {
+            border: 2px solid #000000;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+        }
+        .brutalist-tag:hover {
+            background-color: #facc15;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white text-black selection:bg-yellow-400 selection:text-black">
+
+    <!-- 1. Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 bg-white border-b-4 border-black z-50 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 md:h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="w-8 h-8 md:w-10 md:h-10 bg-yellow-400 border-2 border-black flex items-center justify-center hover:bg-black hover:text-white transition-colors cursor-pointer">
+                        <i class="fa-solid fa-microchip text-lg"></i>
+                    </div>
+                    <span class="font-bold text-lg md:text-xl tracking-tight">Zyad Ayman</span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex items-center gap-6 md:gap-8">
+                    <a href="#about" class="text-sm md:text-base font-bold hover:text-yellow-500 transition-colors">About</a>
+                    <a href="#projects" class="text-sm md:text-base font-bold hover:text-yellow-500 transition-colors">Projects</a>
+                    <a href="#skills" class="text-sm md:text-base font-bold hover:text-yellow-500 transition-colors">Skills</a>
+                    <a href="#contact" class="text-sm md:text-base font-bold hover:text-yellow-500 transition-colors">Contact</a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-black hover:text-yellow-500 p-2 focus:outline-none">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t-2 border-black">
+            <ul class="px-4 py-4 space-y-2 font-bold text-black text-center">
+                <li><a href="#about" class="block py-3 hover:bg-yellow-400 border-2 border-transparent hover:border-black transition-all">About</a></li>
+                <li><a href="#projects" class="block py-3 hover:bg-yellow-400 border-2 border-transparent hover:border-black transition-all">Projects</a></li>
+                <li><a href="#skills" class="block py-3 hover:bg-yellow-400 border-2 border-transparent hover:border-black transition-all">Skills</a></li>
+                <li><a href="#contact" class="block py-3 hover:bg-yellow-400 border-2 border-transparent hover:border-black transition-all">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-20">
+
+        <!-- 2. Hero Section -->
+        <section id="about" class="pt-20 md:pt-32 pb-20 md:pb-32 px-6 lg:px-8 max-w-7xl mx-auto relative overflow-hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 items-center">
+                
+                <div class="order-1 md:order-1 space-y-6 md:space-y-8">
+                    <div class="space-y-4">
+                        <h1 class="text-5xl md:text-6xl font-bold tracking-tight leading-tight" style="letter-spacing:-0.02em">
+                            Hardware Designer & PCB Specialist
+                        </h1>
+                        <div class="w-16 h-1 bg-yellow-400 border-2 border-black"></div>
+                    </div>
+                    
+                    <p class="text-xl md:text-2xl font-bold text-gray-700">
+                        I am an Electronics and Embedded Systems Engineer transforming ideas from schematic capture to mass-manufacturable hardware.
+                    </p>
+                    
+                    <p class="text-base md:text-lg leading-relaxed text-gray-600">
+                        Specializing in custom PCB layout (KiCad), microcontroller firmware (ESP32, RP2040, STM32), RTOS, and digital fabrication. Building robust, production-ready electronic solutions.
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <a href="#projects" class="px-6 py-3 brutalist-button text-sm tracking-wide inline-flex items-center gap-2">
+                            Explore Projects <i class="fa-solid fa-arrow-down"></i>
+                        </a>
+                        <a href="#" class="px-6 py-3 brutalist-button-outline text-sm tracking-wide inline-flex items-center gap-2">
+                            <i class="fa-solid fa-download"></i> Download Resume
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Abstract Hero Visual -->
+                <div class="order-2 md:order-2 flex justify-center">
+                    <div class="relative w-full max-w-md mx-auto h-80 md:h-[30rem]">
+                        <div class="absolute -inset-3 bg-yellow-400 transform rotate-3 brutalist-border"></div>
+                        <div class="absolute inset-0 bg-white brutalist-border flex items-center justify-center overflow-hidden">
+                            <div class="text-center p-8">
+                                <i class="fa-solid fa-microchip text-8xl text-black mb-6 drop-shadow-md"></i>
+                                <div class="text-2xl font-bold tracking-widest border-2 border-black bg-yellow-400 px-4 py-2 inline-block shadow-[4px_4px_0_0_#000]">
+                                    ZYAD_AYMAN
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="w-full h-1 bg-black"></div>
+
+        <!-- 3. Projects Section (Dynamic) -->
+        <section id="projects" class="py-16 md:py-24 px-6 lg:px-8 max-w-7xl mx-auto relative">
+            <div class="flex items-center gap-4 mb-10 md:mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tight inline-block px-2">Featured Projects</h2>
+                <div class="flex-1 h-1 bg-yellow-400 border-b-2 border-black"></div>
+            </div>
+
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap gap-3 mb-12" id="project-filters">
+                <button data-filter="all" class="filter-btn active px-5 py-2 text-sm">All</button>
+                <button data-filter="pcb" class="filter-btn px-5 py-2 text-sm">PCBs & Hardware</button>
+                <button data-filter="embedded" class="filter-btn px-5 py-2 text-sm">Embedded Firmware</button>
+                <button data-filter="fab" class="filter-btn px-5 py-2 text-sm">Digital Fab</button>
+            </div>
+
+            <!-- Dynamic Project Grid -->
+            <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                <!-- Project cards will be injected here by JavaScript -->
+            </div>
+        </section>
+
+        <div class="w-full h-1 bg-black"></div>
+
+        <!-- 4. Skills Matrix Section -->
+        <section id="skills" class="py-16 md:py-24 px-6 lg:px-8 max-w-7xl mx-auto">
+            <div class="flex items-center gap-4 mb-12 md:mb-16">
+                <h2 class="text-4xl md:text-5xl font-bold tracking-tight inline-block px-2">Technical Arsenal</h2>
+                <div class="flex-1 h-1 bg-yellow-400 border-b-2 border-black"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
+                
+                <!-- Category 1 -->
+                <div class="brutalist-card p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-microchip text-yellow-500 text-3xl"></i> Firmware
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">ESP32</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">RP2040</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">STM32</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Raspberry Pi</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">C/C++</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">FreeRTOS</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Python</span>
+                    </div>
+                </div>
+
+                <!-- Category 2 -->
+                <div class="brutalist-card p-6 md:p-8 relative">
+                    <div class="absolute top-0 right-0 w-16 h-16 bg-yellow-400 border-l-2 border-b-2 border-black -z-10 translate-x-2 -translate-y-2"></div>
+                    <h3 class="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-layer-group text-yellow-500 text-3xl"></i> PCB Design
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">KiCad</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Altium</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Multi-layer Routing</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Impedance Control</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Gerber Generation</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Soldering (SMD)</span>
+                    </div>
+                </div>
+
+                <!-- Category 3 -->
+                <div class="brutalist-card p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-cube text-yellow-500 text-3xl"></i> Digital Fab
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Fusion 360</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">3D Printing</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Laser Cutting</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">CNC Milling</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Inkscape</span>
+                    </div>
+                </div>
+
+                <!-- Category 4 -->
+                <div class="brutalist-card p-6 md:p-8">
+                    <h3 class="text-2xl font-bold text-black mb-6 flex items-center gap-3">
+                        <i class="fa-solid fa-network-wired text-yellow-500 text-3xl"></i> Protocols
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">SPI</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">I2C</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">UART</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">RS485</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">CAN Bus</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Git/GitHub</span>
+                        <span class="px-3 py-1 brutalist-tag text-sm font-bold text-black">Linux</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- 5. Footer & Contact Section -->
+    <footer id="contact" class="border-t-4 border-black bg-yellow-400 mt-12 relative">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 py-16 md:py-20 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                
+                <div class="text-center md:text-left">
+                    <h2 class="text-3xl md:text-4xl font-bold text-black mb-4">Let's build something.</h2>
+                    <p class="text-black font-medium max-w-md text-lg">Open for new opportunities. Discuss hardware architectures, firmware, or PCB design.</p>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <a href="mailto:contact@example.com" class="w-14 h-14 bg-white border-2 border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-all transform hover:-translate-y-1 shadow-[4px_4px_0_0_#000]">
+                        <i class="fa-solid fa-envelope text-2xl"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/yourprofile" target="_blank" class="w-14 h-14 bg-white border-2 border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-all transform hover:-translate-y-1 shadow-[4px_4px_0_0_#000]">
+                        <i class="fa-brands fa-linkedin-in text-2xl"></i>
+                    </a>
+                    <a href="https://github.com/yourusername" target="_blank" class="w-14 h-14 bg-white border-2 border-black flex items-center justify-center text-black hover:bg-black hover:text-white transition-all transform hover:-translate-y-1 shadow-[4px_4px_0_0_#000]">
+                        <i class="fa-brands fa-github text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="border-t-2 border-black mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm font-bold text-black">
+                <p>&copy; <span id="year"></span> Zyad Ayman. All rights reserved.</p>
+                <p class="flex items-center gap-2">
+                    Built with HTML, Tailwind & Vanilla JS
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Set current year in footer
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu on link click
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        /* =====================================================================
+           PROJECTS DATA ARRAY
+           ===================================================================== */
+        const projects = [
+            {
+                id: 1,
+                title: "ESP32 RS485 Carrier Board",
+                category: "pcb",
+                image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800",
+                desc: "A custom 4-layer industrial carrier board for the ESP32 featuring isolated RS485 transceivers, power conditioning, and ESD protection.",
+                tags: ["KiCad", "ESP32", "Altium", "RS485"],
+                links: { github: "#", docs: "#" }
+            },
+            {
+                id: 2,
+                title: "FOTA Automotive Firmware Node",
+                category: "embedded",
+                image: "https://images.unsplash.com/photo-1593006526971-460d3d5f30e0?auto=format&fit=crop&q=80&w=800",
+                desc: "Developed a FreeRTOS-based firmware for STM32 microcontrollers enabling Firmware-Over-The-Air (FOTA) updates via CAN bus.",
+                tags: ["STM32", "C", "FreeRTOS", "CAN Bus"],
+                links: { github: "#", docs: null }
+            },
+            {
+                id: 3,
+                title: "Wearable WS2812B Lighted Shoes",
+                category: "fab",
+                image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=800",
+                desc: "Designed and 3D printed flexible TPU enclosures for addressable LED strips integrated into footwear. Powered by an RP2040.",
+                tags: ["RP2040", "Fusion360", "3D Printing", "I2C"],
+                links: { github: "#", docs: "#" }
+            },
+            {
+                id: 4,
+                title: "Home Automation IoT Gateway",
+                category: "embedded",
+                image: "https://images.unsplash.com/photo-1555664424-778a1e5e1b48?auto=format&fit=crop&q=80&w=800",
+                desc: "A central hub combining Zigbee and Wi-Fi to bridge local sensor networks to an MQTT broker. Implemented secure TLS communication.",
+                tags: ["ESP32-S3", "MQTT", "IoT", "C++"],
+                links: { github: "#", docs: null }
+            }
+        ];
+
+        const projectsGrid = document.getElementById('projects-grid');
+        
+        function renderProjects(filterCategory = 'all') {
+            projectsGrid.innerHTML = '';
+            const filteredProjects = filterCategory === 'all' ? projects : projects.filter(p => p.category === filterCategory);
+
+            filteredProjects.forEach(project => {
+                const tagsHtml = project.tags.map(tag => 
+                    `<span class="px-2 py-1 bg-white border-2 border-black text-xs font-bold hover:bg-yellow-400 transition-colors">${tag}</span>`
+                ).join('');
+
+                let linksHtml = '';
+                if(project.links.github) {
+                    linksHtml += `<a href="${project.links.github}" class="inline-flex items-center gap-2 font-bold text-black hover:text-yellow-600 transition-colors"><i class="fa-brands fa-github text-lg"></i> GitHub</a>`;
+                }
+                if(project.links.docs) {
+                    if (linksHtml !== '') linksHtml += `<span class="mx-3 border-l-2 border-black h-4"></span>`;
+                    linksHtml += `<a href="${project.links.docs}" class="inline-flex items-center gap-2 font-bold text-black hover:text-yellow-600 transition-colors"><i class="fa-solid fa-file-pdf text-lg"></i> Docs</a>`;
+                }
+
+                const cardHtml = `
+                    <div class="brutalist-card flex flex-col h-full overflow-hidden group">
+                        <div class="relative h-64 border-b-2 border-black bg-gray-100 overflow-hidden">
+                            <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                            <div class="absolute top-4 right-4">
+                                <span class="px-3 py-1 bg-yellow-400 border-2 border-black text-xs font-bold text-black uppercase tracking-widest shadow-[2px_2px_0_0_#000]">
+                                    ${project.category}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="p-6 md:p-8 flex flex-col flex-grow bg-white">
+                            <h3 class="text-2xl font-bold text-black mb-4">${project.title}</h3>
+                            <p class="text-gray-700 text-base mb-6 flex-grow leading-relaxed">
+                                ${project.desc}
+                            </p>
+                            
+                            <div class="mt-auto">
+                                <div class="flex flex-wrap gap-2 mb-6">
+                                    ${tagsHtml}
+                                </div>
+                                <div class="flex items-center pt-6 border-t-2 border-black">
+                                    ${linksHtml}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                projectsGrid.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        }
+
+        renderProjects('all');
+
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                
+                const filterValue = e.target.getAttribute('data-filter');
+                projectsGrid.style.opacity = '0';
+                setTimeout(() => {
+                    renderProjects(filterValue);
+                    projectsGrid.style.opacity = '1';
+                }, 150);
+            });
+        });
+        
+        projectsGrid.style.transition = 'opacity 0.2s ease';
+
+    </script>
+</body>
+</html>
