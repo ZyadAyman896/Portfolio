@@ -194,11 +194,11 @@
                         </h1>
                     </div>
                     
-                    <p class="text-xl md:text-2xl font-bold text-gray-800">
+                    <p id="hero-subtitle" class="text-xl md:text-2xl font-bold text-gray-800">
                         Transforming ideas from schematic capture to mass-manufacturable hardware.
                     </p>
                     
-                    <p class="text-base md:text-lg leading-relaxed text-gray-700 font-medium">
+                    <p id="hero-desc" class="text-base md:text-lg leading-relaxed text-gray-700 font-medium">
                         Specializing in custom PCB layout (KiCad), microcontroller firmware (ESP32, RP2040, STM32), RTOS, and digital fabrication. Building robust, production-ready electronic solutions with an old-school engineering ethos.
                     </p>
                     
@@ -212,17 +212,20 @@
                     </div>
                 </div>
                 
-                <!-- Abstract Hero Visual -->
+                <!-- Abstract Hero Visual or Custom Image -->
                 <div class="order-2 md:order-2 flex justify-center">
                     <div class="relative w-full max-w-md mx-auto h-80 md:h-[30rem]">
                         <div class="absolute -inset-3 bg-yellow-400 transform rotate-3 brutalist-border"></div>
-                        <div class="absolute inset-0 bg-retro-card brutalist-border flex items-center justify-center overflow-hidden retro-scanlines">
-                            <div class="text-center p-8 relative z-10">
+                        <div id="hero-visual-container" class="absolute inset-0 bg-retro-card brutalist-border flex items-center justify-center overflow-hidden retro-scanlines">
+                            <!-- Default Abstract Visual -->
+                            <div id="hero-visual-default" class="text-center p-8 relative z-10">
                                 <i class="fa-solid fa-server text-8xl text-black mb-6 drop-shadow-md"></i>
                                 <div class="font-mono text-2xl font-bold tracking-widest border-3 border-black bg-yellow-400 px-4 py-2 inline-block shadow-[4px_4px_0_0_#000] uppercase">
                                     SYS.READY_
                                 </div>
                             </div>
+                            <!-- Custom Image -->
+                            <img id="hero-visual-image" src="" alt="Profile Image" class="w-full h-full object-cover hidden filter grayscale hover:grayscale-0 transition-all duration-500 relative z-10">
                         </div>
                     </div>
                 </div>
@@ -335,11 +338,34 @@
                 <button id="close-admin" class="absolute top-4 right-4 text-black hover:text-red-500 font-bold text-2xl">&times;</button>
                 <h2 class="font-mono text-3xl font-bold mb-6 uppercase border-b-3 border-black pb-2">Admin Panel</h2>
                 
-                <form id="add-project-form" class="space-y-4 font-mono font-bold">
-                    <div>
-                        <label class="block mb-1">Project Title</label>
-                        <input type="text" id="p-title" required class="w-full border-3 border-black p-2 bg-white" placeholder="e.g. Smart Watch">
-                    </div>
+                <div class="space-y-8">
+                    <!-- Profile Edit Form -->
+                    <form id="edit-profile-form" class="space-y-4 font-mono font-bold bg-gray-100 p-4 border-2 border-black">
+                        <h3 class="text-xl uppercase border-b-2 border-black pb-1 mb-4">Edit Intro Profile</h3>
+                        <div>
+                            <label class="block mb-1">Subtitle</label>
+                            <input type="text" id="pr-subtitle" class="w-full border-3 border-black p-2 bg-white" placeholder="Transforming ideas...">
+                        </div>
+                        <div>
+                            <label class="block mb-1">Description</label>
+                            <textarea id="pr-desc" class="w-full border-3 border-black p-2 bg-white h-24"></textarea>
+                        </div>
+                        <div>
+                            <label class="block mb-1">Profile Image (upload file to override default visual)</label>
+                            <input type="file" id="pr-image" accept="image/*" class="w-full border-3 border-black p-2 bg-white">
+                        </div>
+                        <div class="pt-2">
+                            <button type="submit" class="brutalist-button px-6 py-2">Save Profile</button>
+                        </div>
+                    </form>
+
+                    <!-- Add Project Form -->
+                    <form id="add-project-form" class="space-y-4 font-mono font-bold bg-gray-100 p-4 border-2 border-black">
+                        <h3 class="text-xl uppercase border-b-2 border-black pb-1 mb-4">Add Project</h3>
+                        <div>
+                            <label class="block mb-1">Project Title</label>
+                            <input type="text" id="p-title" required class="w-full border-3 border-black p-2 bg-white" placeholder="e.g. Smart Watch">
+                        </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block mb-1">Category</label>
@@ -350,8 +376,8 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block mb-1">Image URL</label>
-                            <input type="text" id="p-image" required class="w-full border-3 border-black p-2 bg-white" placeholder="https://...">
+                            <label class="block mb-1">Image</label>
+                            <input type="file" id="p-image" accept="image/*" required class="w-full border-3 border-black p-2 bg-white">
                         </div>
                     </div>
                     <div>
@@ -376,7 +402,8 @@
                         <button type="submit" class="brutalist-button px-6 py-3 flex-1">Add Project</button>
                         <button type="button" id="export-projects" class="brutalist-button-outline px-6 py-3 flex-1">Export Code</button>
                     </div>
-                </form>
+                    </form>
+                </div>
             </div>
         </div>
     </main>
@@ -478,6 +505,33 @@
         // LOAD FROM LOCAL STORAGE
         let savedProjects = JSON.parse(localStorage.getItem('my_portfolio_projects') || '[]');
         let allProjects = [...projects, ...savedProjects];
+
+        // PROFILE LOGIC
+        let savedProfile = JSON.parse(localStorage.getItem('my_portfolio_profile') || 'null');
+        
+        function renderProfile() {
+            if (!savedProfile) return;
+            
+            if (savedProfile.subtitle) {
+                document.getElementById('hero-subtitle').textContent = savedProfile.subtitle;
+                document.getElementById('pr-subtitle').value = savedProfile.subtitle;
+            }
+            if (savedProfile.desc) {
+                document.getElementById('hero-desc').textContent = savedProfile.desc;
+                document.getElementById('pr-desc').value = savedProfile.desc;
+            }
+            if (savedProfile.image) {
+                document.getElementById('hero-visual-default').classList.add('hidden');
+                const imgEl = document.getElementById('hero-visual-image');
+                imgEl.src = savedProfile.image;
+                imgEl.classList.remove('hidden');
+            } else {
+                document.getElementById('hero-visual-default').classList.remove('hidden');
+                document.getElementById('hero-visual-image').classList.add('hidden');
+            }
+        }
+        
+        renderProfile();
 
         const projectsGrid = document.getElementById('projects-grid');
         
@@ -581,15 +635,52 @@
             adminModal.classList.remove('flex');
         });
 
-        // Add new project
-        addProjectForm.addEventListener('submit', (e) => {
+        // Helper function to read file as Base64
+        function readFileAsDataURL(file) {
+            return new Promise((resolve, reject) => {
+                if (!file) return resolve(null);
+                const reader = new FileReader();
+                reader.onload = e => resolve(e.target.result);
+                reader.onerror = e => reject(e);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Edit Profile
+        const editProfileForm = document.getElementById('edit-profile-form');
+        editProfileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const fileInput = document.getElementById('pr-image');
+            let imageBase64 = savedProfile ? savedProfile.image : "";
+            if (fileInput.files.length > 0) {
+                imageBase64 = await readFileAsDataURL(fileInput.files[0]);
+            }
+
+            savedProfile = {
+                subtitle: document.getElementById('pr-subtitle').value,
+                desc: document.getElementById('pr-desc').value,
+                image: imageBase64
+            };
+            localStorage.setItem('my_portfolio_profile', JSON.stringify(savedProfile));
+            renderProfile();
+            alert("Profile updated successfully!");
+        });
+
+        // Add new project
+        addProjectForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fileInput = document.getElementById('p-image');
+            let imageBase64 = "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=800";
+            if (fileInput.files.length > 0) {
+                imageBase64 = await readFileAsDataURL(fileInput.files[0]);
+            }
             
             const newProject = {
                 id: Date.now(),
                 title: document.getElementById('p-title').value,
                 category: document.getElementById('p-category').value,
-                image: document.getElementById('p-image').value,
+                image: imageBase64,
                 desc: document.getElementById('p-desc').value,
                 tags: document.getElementById('p-tags').value.split(',').map(t => t.trim()).filter(t => t),
                 links: {
