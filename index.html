@@ -462,6 +462,11 @@
         </div>
     </footer>
 
+    <!-- Embedded state used by exported versions so profile edits and project edits travel with the HTML file -->
+    <script id="portfolio-embedded-state">
+        window.__PORTFOLIO_EMBEDDED_STATE__ = { profile: null, projects: null };
+    </script>
+
     <!-- Scripts -->
     <script>
         // Set current year in footer
@@ -589,12 +594,18 @@
             return p;
         }
 
-        // Unified, editable/deletable project store. On first run, migrate the hardcoded
-        // defaults + any previously-added projects into one persisted list.
+        // Unified, editable/deletable project store.
+        // An exported HTML file can carry its latest project state with it, so it
+        // works on another device/browser even when that device has no localStorage data.
+        const embeddedState = window.__PORTFOLIO_EMBEDDED_STATE__ || {};
         let allProjects = JSON.parse(localStorage.getItem('my_portfolio_all_projects') || 'null');
         if (!allProjects) {
+            const embeddedProjects = Array.isArray(embeddedState.projects) ? embeddedState.projects : null;
             const legacySavedProjects = JSON.parse(localStorage.getItem('my_portfolio_projects') || '[]');
-            allProjects = [...projects, ...legacySavedProjects].map(normalizeProject);
+            allProjects = embeddedProjects && embeddedProjects.length
+                ? embeddedProjects
+                : [...projects, ...legacySavedProjects];
+            allProjects = allProjects.map(normalizeProject);
             localStorage.setItem('my_portfolio_all_projects', JSON.stringify(allProjects));
         } else {
             allProjects = allProjects.map(normalizeProject);
@@ -605,7 +616,8 @@
         }
 
         // PROFILE LOGIC
-        let savedProfile = JSON.parse(localStorage.getItem('my_portfolio_profile') || 'null');
+        // Prefer device-local edits; otherwise use the profile embedded in an exported HTML file.
+        let savedProfile = JSON.parse(localStorage.getItem('my_portfolio_profile') || 'null') || embeddedState.profile || null;
         
         function renderProfile() {
             if (!savedProfile) return;
@@ -978,17 +990,33 @@
             adminModal.classList.remove('flex');
         });
 
-        // Export code for hardcoding later
+        // Export the COMPLETE current website, including:
+        // - all project additions/edits/deletions and images
+        // - the edited intro subtitle/description
+        // - the selected profile image
+        // The exported HTML embeds this state, so it is not dependent on the
+        // localStorage of the device where it was edited.
         exportBtn.addEventListener('click', () => {
-            const code = JSON.stringify(allProjects, null, 4);
-            const blob = new Blob([code], { type: 'application/json' });
+            const exportState = {
+                profile: savedProfile || null,
+                projects: allProjects
+            };
+
+            const exportedHtml = document.documentElement.outerHTML.replace(
+                /(<script id="portfolio-embedded-state">)[\s\S]*?(<\/script>)/,
+                '$1\n        window.__PORTFOLIO_EMBEDDED_STATE__ = ' + JSON.stringify(exportState) + ';\n    $2'
+            );
+
+            const blob = new Blob(['<!DOCTYPE html>\n' + exportedHtml], { type: 'text/html;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'exported_projects.json';
+            a.download = 'Zyad_Ayman_Portfolio.html';
+            document.body.appendChild(a);
             a.click();
-            URL.revokeObjectURL(url);
-            alert("Exported projects to JSON file! You can copy the contents back into your HTML when you want to make them permanent.");
+            a.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+            alert("Complete portfolio exported! Your project changes and intro/profile changes are now embedded in the HTML file.");
         });
 
     </script>
